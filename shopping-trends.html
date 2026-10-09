@@ -64,13 +64,50 @@
       color: #aab6ca;
     }
 
-    .card {
-      background: #121c30;
-      border: 1px solid #263247;
-      border-radius: 12px;
-      padding: 24px;
-      margin-bottom: 18px;
-    }
+    
+/* Project KPI Cards */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 25px 0;
+}
+
+.kpi-card {
+  background: #121c30;
+  border: 1px solid #263247;
+  border-radius: 12px;
+  padding: 22px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.kpi-card:hover {
+  transform: translateY(-3px);
+  border-color: #5eead4;
+}
+
+.kpi-card p {
+  color: #aab6ca;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.kpi-card h3 {
+  color: #5eead4;
+  font-size: clamp(22px, 4vw, 30px);
+}
+
+.kpi-note {
+  color: #aab6ca;
+  font-size: 13px;
+  margin-top: 12px;
+}
+
+@media (max-width: 480px) {
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+}
 
     .tags {
       margin-top: 15px;
@@ -145,7 +182,42 @@
       </a>
     </div>
 
-    <section>
+<section>
+  <h2>Project at a Glance</h2>
+  <p class="muted">
+    Key metrics from the Shopping Trends dataset.
+  </p>
+
+  <div class="kpi-grid">
+
+    <div class="kpi-card">
+      <p>Customer Records</p>
+      <h3>3,900</h3>
+    </div>
+
+    <div class="kpi-card">
+      <p>Total Purchase Amount</p>
+      <h3>$233,081</h3>
+    </div>
+
+    <div class="kpi-card">
+      <p>Average Purchase</p>
+      <h3>$59.76</h3>
+    </div>
+
+    <div class="kpi-card">
+      <p>Average Review Rating</p>
+      <h3>3.75 / 5</h3>
+    </div>
+
+  </div>
+
+  <p class="kpi-note">
+    Summary metrics calculated from the analyzed dataset.
+  </p>
+</section>
+
+ <section>
       <div class="card">
         <h2>01. Project Overview</h2>
         <p class="muted">
