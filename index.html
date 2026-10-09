@@ -335,10 +335,13 @@ body::before {
   height: 100%;
   display: block;
   pointer-events: none;
-  z-index: -1;
+  z-index: 0;
   opacity: 0.78;
 }
-
+body > :not(#data-canvas) {
+  position: relative;
+  z-index: 1;
+}
 /* Keep website content above the animation */
 
 body {
@@ -599,6 +602,228 @@ body {
       Data Analyst Portfolio · Built with HTML and CSS
     </div>
   </footer>
+
+<script>
+(() => {
+  const canvas = document.getElementById("data-canvas");
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+
+  const reducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  );
+
+  let width = 0;
+  let height = 0;
+  let dpr = 1;
+  let points = [];
+  let particles = [];
+  let frame = 0;
+  let animationId;
+  let lastTime = 0;
+
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    width = window.innerWidth;
+    height = window.innerHeight;
+
+    canvas.width = Math.round(width * dpr);
+    canvas.height = Math.round(height * dpr);
+
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    const count = Math.min(
+      75,
+      Math.max(24, Math.floor((width * height) / 18000))
+    );
+
+    points = Array.from({ length: count }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: (Math.random() - 0.5) * 0.28,
+      vy: (Math.random() - 0.5) * 0.28,
+      r: Math.random() * 1.5 + 1
+    }));
+
+    particles = Array.from({ length: 22 }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      speed: Math.random() * 0.65 + 0.2,
+      size: Math.random() * 1.8 + 0.6
+    }));
+  }
+
+  function drawNetwork() {
+    const connectionDistance = Math.min(145, width * 0.22);
+
+    for (let i = 0; i < points.length; i++) {
+      const p = points[i];
+
+      for (let j = i + 1; j < points.length; j++) {
+        const q = points[j];
+        const dx = p.x - q.x;
+        const dy = p.y - q.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < connectionDistance) {
+          const opacity =
+            (1 - distance / connectionDistance) * 0.22;
+
+          ctx.strokeStyle = `rgba(45, 212, 191, ${opacity})`;
+          ctx.lineWidth = 0.8;
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(q.x, q.y);
+          ctx.stroke();
+        }
+      }
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(94, 234, 212, 0.65)";
+      ctx.fill();
+    }
+  }
+
+  function drawChart() {
+    const chartWidth = Math.min(210, width * 0.28);
+    const chartHeight = 90;
+    const margin = 24;
+
+    const locations = [
+      { x: width - chartWidth - margin, y: height * 0.25 },
+      { x: margin, y: height * 0.68 }
+    ];
+
+    locations.forEach((chart, index) => {
+      if (chart.x < 0 || chart.y < 0) return;
+
+      const barCount = 7;
+      const gap = 8;
+      const barWidth = (chartWidth - gap * (barCount - 1)) / barCount;
+
+      ctx.strokeStyle = "rgba(45, 212, 191, 0.10)";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(chart.x, chart.y + chartHeight);
+      ctx.lineTo(chart.x + chartWidth, chart.y + chartHeight);
+      ctx.stroke();
+
+      for (let i = 0; i < barCount; i++) {
+        const wave = Math.sin(frame * 0.018 + i * 0.8 + index);
+        const barHeight = 18 + ((wave + 1) / 2) * 47;
+        const x = chart.x + i * (barWidth + gap);
+        const y = chart.y + chartHeight - barHeight;
+
+        ctx.fillStyle = `rgba(45, 212, 191, ${
+          0.10 + ((wave + 1) / 2) * 0.14
+        })`;
+
+        ctx.fillRect(x, y, barWidth, barHeight);
+      }
+
+      ctx.beginPath();
+
+      for (let i = 0; i < 30; i++) {
+        const x = chart.x + (i / 29) * chartWidth;
+        const y =
+          chart.y +
+          24 +
+          Math.sin(i * 0.35 + frame * 0.025 + index) * 13 +
+          (i / 29) * 12;
+
+        if (i === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+      }
+
+      ctx.strokeStyle = "rgba(96, 165, 250, 0.45)";
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    });
+  }
+
+  function drawParticles() {
+    particles.forEach((p) => {
+      p.x += p.speed;
+      p.y -= p.speed * 0.25;
+
+      if (p.x > width + 5) {
+        p.x = -5;
+        p.y = Math.random() * height;
+      }
+
+      if (p.y < -5) p.y = height + 5;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(45, 212, 191, 0.55)";
+      ctx.fill();
+    });
+  }
+
+  function drawStaticFrame() {
+    ctx.clearRect(0, 0, width, height);
+    drawNetwork();
+    drawChart();
+    drawParticles();
+  }
+
+  function animate(time) {
+    if (document.hidden) {
+      animationId = null;
+      return;
+    }
+
+    animationId = requestAnimationFrame(animate);
+
+    if (time - lastTime < 33) return;
+    lastTime = time;
+    frame++;
+
+    points.forEach((p) => {
+      p.x += p.vx;
+      p.y += p.vy;
+
+      if (p.x < 0 || p.x > width) p.vx *= -1;
+      if (p.y < 0 || p.y > height) p.vy *= -1;
+    });
+
+    drawStaticFrame();
+  }
+
+  function startAnimation() {
+    if (reducedMotion.matches || document.hidden) {
+      if (animationId) cancelAnimationFrame(animationId);
+      animationId = null;
+      drawStaticFrame();
+      return;
+    }
+
+    if (!animationId) {
+      animationId = requestAnimationFrame(animate);
+    }
+  }
+
+  resize();
+  startAnimation();
+
+  window.addEventListener("resize", () => {
+    resize();
+    startAnimation();
+  });
+
+  document.addEventListener("visibilitychange", startAnimation);
+
+  if (reducedMotion.addEventListener) {
+    reducedMotion.addEventListener("change", startAnimation);
+  }
+})();
+</script>
 
 </body>
 </html>
