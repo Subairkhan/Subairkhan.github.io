@@ -235,6 +235,81 @@
         grid-template-columns: 1fr;
       }
     }
+
+
+
+/* ===== Animated Navy & Teal Background ===== */
+
+body {
+    background-color: #0b1120;
+    background-image:
+        radial-gradient(
+            ellipse at 15% 20%,
+            rgba(20, 184, 166, 0.13),
+            transparent 45%
+        ),
+        radial-gradient(
+            ellipse at 85% 75%,
+            rgba(59, 130, 246, 0.12),
+            transparent 45%
+        );
+    background-size: 150% 150%;
+    animation: ambientGlow 16s ease-in-out infinite alternate;
+}
+
+@keyframes ambientGlow {
+    0% {
+        background-position: 0% 0%;
+    }
+
+    100% {
+        background-position: 100% 100%;
+    }
+}
+
+/* Smooth movement for existing cards */
+
+.card {
+    transition:
+        transform 0.35s ease,
+        border-color 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    border-color: #5eead4;
+    box-shadow: 0 8px 28px rgba(94, 234, 212, 0.10);
+}
+
+/* Smooth link hover */
+
+a {
+    transition: color 0.3s ease, opacity 0.3s ease;
+}
+
+/* Respect reduced-motion preferences */
+
+@media (prefers-reduced-motion: reduce) {
+    body {
+        animation: none;
+    }
+
+    .card,
+    a {
+        transition: none;
+    }
+
+    .card:hover {
+        transform: none;
+    }
+}
+
+
+
+
+
+    
   </style>
 </head>
 
