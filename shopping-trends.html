@@ -113,6 +113,47 @@
       margin-top: 15px;
     }
 
+
+
+
+/* Consistent section alignment */
+section {
+  width: 100%;
+}
+
+section > .card {
+  width: 100%;
+}
+
+section > .card h2 {
+  margin-bottom: 15px;
+}
+
+/* Align project file buttons neatly */
+.project-file-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin: 15px 0 25px;
+}
+
+.project-file-buttons .btn {
+  margin-top: 0;
+  text-align: center;
+}
+
+/* Keep workflow and business impact cards aligned */
+section > .card,
+section > .card + .card {
+  width: 100%;
+}
+
+
+
+
+
+    
     .tag {
       display: inline-block;
       background: #203449;
