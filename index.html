@@ -358,6 +358,29 @@ body {
   }
 }
 
+/* ===== Scroll Reveal Animation ===== */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
   </style>
 </head>
 
@@ -822,6 +845,36 @@ body {
   if (reducedMotion.addEventListener) {
     reducedMotion.addEventListener("change", startAnimation);
   }
+})();
+</script>
+
+<script>
+(() => {
+  const elements = document.querySelectorAll(
+    "section, .project-card, .skill-card"
+  );
+
+  elements.forEach((element) => {
+    element.classList.add("reveal");
+  });
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      threshold: 0.12
+    }
+  );
+
+  elements.forEach((element) => {
+    observer.observe(element);
+  });
 })();
 </script>
 
