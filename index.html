@@ -326,10 +326,41 @@ body::before {
   }
 }
 
+/* ===== Hybrid Data Animation Canvas ===== */
+
+#data-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.78;
+}
+
+/* Keep website content above the animation */
+
+body {
+  position: relative;
+  isolation: isolate;
+  background-color: #0b1120;
+}
+
+/* Keep the animation smooth for users who prefer less motion */
+
+@media (prefers-reduced-motion: reduce) {
+  #data-canvas {
+    opacity: 0.25;
+  }
+}
+
   </style>
 </head>
 
 <body>
+
+<canvas id="data-canvas" aria-hidden="true"></canvas>
 
   <header>
     <nav class="container">
