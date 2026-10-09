@@ -235,6 +235,97 @@
         grid-template-columns: 1fr;
       }
     } 
+    
+/* ===== Data Analyst Animated Background ===== */
+
+body {
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(
+      circle at 15% 20%,
+      rgba(20, 184, 166, 0.12),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 85% 70%,
+      rgba(59, 130, 246, 0.10),
+      transparent 35%
+    ),
+    #0b1120;
+}
+
+/* Subtle moving data-grid pattern */
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+
+  background-image:
+    radial-gradient(
+      circle,
+      rgba(94, 234, 212, 0.45) 1px,
+      transparent 1.8px
+    ),
+    linear-gradient(
+      rgba(94, 234, 212, 0.035) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(94, 234, 212, 0.035) 1px,
+      transparent 1px
+    );
+
+  background-size: 46px 46px, 46px 46px, 46px 46px;
+  animation: dataGridMove 24s linear infinite;
+  opacity: 0.45;
+}
+
+@keyframes dataGridMove {
+  from {
+    background-position: 0 0, 0 0, 0 0;
+  }
+
+  to {
+    background-position: 46px 46px, 46px 46px, 46px 46px;
+  }
+}
+
+/* Smooth project and skill card hover */
+
+.card {
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  border-color: #5eead4;
+  box-shadow: 0 8px 26px rgba(94, 234, 212, 0.10);
+}
+
+/* Accessibility: reduce motion when requested */
+
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    animation: none;
+  }
+
+  .card {
+    transition: none;
+  }
+
+  .card:hover {
+    transform: none;
+  }
+}
+
   </style>
 </head>
 
