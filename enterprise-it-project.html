@@ -1,173 +1,635 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Enterprise IT Services & Digital Transformation Analytics</title>
+  <meta name="description" content="Enterprise IT Services and Digital Transformation Analytics project by Subair Khan using Power BI and Excel.">
+  <title>Enterprise IT Analytics | Subair Khan</title>
 
   <style>
-    * {
-      box-sizing: border-box;
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0b1120;
+      --panel: #121c30;
+      --border: #263247;
+      --text: #e5e7eb;
+      --muted: #aab6ca;
+      --accent: #5eead4;
+      --tag-bg: #203449;
     }
+
+    html { scroll-behavior: smooth; }
 
     body {
-      margin: 0;
-      padding: 30px 6%;
       font-family: Arial, sans-serif;
-      background: #0b1220;
-      color: #f1f5f9;
+      background: var(--bg);
+      color: var(--text);
       line-height: 1.7;
+      position: relative;
+      isolation: isolate;
+      background-color: #0b1120;
     }
 
-    a {
-      color: #55e6d1;
+    body > :not(#data-canvas) { position: relative; z-index: 1; }
+
+    #data-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.78;
+    }
+
+    .container { width: min(100% - 40px, 1000px); margin-inline: auto; }
+
+    header {
+      padding: 22px 0;
+      border-bottom: 1px solid var(--border);
+      background: rgba(11, 17, 32, 0.72);
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .hero { padding: 62px 0 35px; }
+    .label {
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    h1 { font-size: clamp(32px, 6vw, 48px); line-height: 1.2; margin: 15px 0; }
+    h2 { color: var(--accent); font-size: 25px; line-height: 1.3; margin-bottom: 15px; }
+    h3 { font-size: 19px; line-height: 1.4; margin-bottom: 8px; }
+    p { overflow-wrap: anywhere; }
+    .muted, .kpi-note { color: var(--muted); }
+
+    section { width: 100%; padding: 24px 0; scroll-margin-top: 20px; }
+
+    .card {
+      width: 100%;
+      background: rgba(18, 28, 48, 0.94);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 16px;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 18px rgba(94, 234, 212, 0.10);
+    }
+
+    .card:last-child { margin-bottom: 0; }
+    .tags { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 15px; }
+
+    .tag {
+      display: inline-block;
+      background: var(--tag-bg);
+      color: var(--accent);
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 13px;
+    }
+
+    ul { padding-left: 22px; }
+    li { margin: 8px 0; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      background: var(--accent);
+      color: var(--bg);
+      padding: 10px 16px;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      font-weight: bold;
+      text-align: center;
+      line-height: 1.4;
+      margin-top: 12px;
+      transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    }
+
+    .btn:hover {
+      background: transparent;
+      color: var(--accent);
       text-decoration: none;
+      transform: translateY(-2px);
     }
 
-.back {
-  display: inline-block;
-  margin-bottom: 24px;
-  padding: 0;
-  border: none;
-  border-radius: 0;
-}
+    .hero .btn { margin-top: 22px; }
 
-    h1 {
-      color: #55e6d1;
-      line-height: 1.3;
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin: 24px 0;
     }
 
-    .intro, .dashboard {
-      background: #131e32;
-      border: 1px solid #26364d;
-      border-radius: 14px;
+    .kpi-card {
+      min-width: 0;
+      background: rgba(18, 28, 48, 0.94);
+      border: 1px solid var(--border);
+      border-radius: 12px;
       padding: 22px;
-      margin: 22px 0;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     }
+
+    .kpi-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent);
+      box-shadow: 0 0 20px rgba(94, 234, 212, 0.14);
+    }
+
+    .kpi-card p { color: var(--muted); font-size: 14px; margin-bottom: 8px; }
+    .kpi-card h3 { color: var(--accent); font-size: clamp(22px, 4vw, 30px); margin-bottom: 0; }
+    .kpi-note { font-size: 13px; margin-top: 10px; }
+
+    .project-file-buttons, .dashboard-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      margin: 16px 0 8px;
+    }
+
+    .project-file-buttons .btn, .dashboard-actions .btn { margin: 0; }
 
     .gallery {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 22px;
+      gap: 16px;
+      margin-top: 20px;
     }
 
-    .dashboard img {
+    .dashboard-card {
+      min-width: 0;
+      background: rgba(18, 28, 48, 0.94);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .dashboard-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent);
+      box-shadow: 0 0 20px rgba(94, 234, 212, 0.13);
+    }
+
+    .dashboard-card h3 { color: var(--accent); }
+    .dashboard-image {
       display: block;
       width: 100%;
       height: auto;
-      border-radius: 8px;
-      border: 1px solid #34465e;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-top: 14px;
+      background: var(--panel);
     }
 
-    .dashboard h2 {
-      font-size: 19px;
-      color: #55e6d1;
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 25px 0;
+      text-align: center;
+      color: var(--muted);
+      margin-top: 30px;
     }
 
-    @media (max-width: 700px) {
-      body {
-        padding: 20px 5%;
-      }
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
 
-      .gallery {
-        grid-template-columns: 1fr;
-      }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 600px) {
+      .container { width: calc(100% - 32px); }
+      .hero { padding-top: 42px; }
+      h1 { font-size: 34px; }
+      h2 { font-size: 22px; }
+      .card, .kpi-card, .dashboard-card { padding: 18px; }
+      .kpi-grid, .gallery { grid-template-columns: 1fr; }
+      .project-file-buttons, .dashboard-actions { align-items: stretch; }
+      .project-file-buttons .btn, .dashboard-actions .btn { width: 100%; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #data-canvas { opacity: 0.25; }
+      .reveal { opacity: 1; transform: none; transition: none; }
+      *, *::before, *::after { scroll-behavior: auto !important; }
     }
   </style>
 </head>
 
 <body>
+  <canvas id="data-canvas" aria-hidden="true"></canvas>
 
-<a class="back" href="https://subairkhan.github.io/#projects">← Back to Portfolio</a>
+  <header>
+    <div class="container">
+      <a href="https://subairkhan.github.io/#projects">← Back to Portfolio</a>
+    </div>
+  </header>
 
-  <h1>Enterprise IT Services & Digital Transformation Analytics</h1>
+  <main class="container">
+    <div class="hero">
+      <p class="label">BUSINESS INTELLIGENCE PROJECT</p>
+      <h1>Enterprise IT Services &amp; Digital Transformation Analytics</h1>
+      <p class="muted">
+        An interactive Power BI project designed to explore enterprise performance across workforce,
+        clients, projects, sales, finance, IT operations, cloud services, training and AI initiatives.
+      </p>
 
-  <div class="intro">
-    <h2>Project Overview</h2>
-    <p>
-      An interactive Power BI project designed to analyze enterprise
-      performance across workforce, clients, projects, sales, finance,
-      IT operations, cloud services, training, and AI initiatives.
-    </p>
-    <p><strong>Tools:</strong> Power BI, Excel, Generative AI Tools</p>
-    <p>
-      <a href="https://drive.google.com/file/d/1XB60kBRVXyWeIfcdd7FXGghSlB_qsaP-/view?usp=sharing"
+      <div class="tags" aria-label="Tools used">
+        <span class="tag">Power BI</span>
+        <span class="tag">Excel</span>
+        <span class="tag">Business Intelligence</span>
+        <span class="tag">Data Analytics</span>
+        <span class="tag">Generative AI Tools</span>
+      </div>
+
+      <a class="btn"
+         href="https://drive.google.com/file/d/1XB60kBRVXyWeIfcdd7FXGghSlB_qsaP-/view?usp=sharing"
          target="_blank" rel="noopener noreferrer">
         View Power BI Project
       </a>
-    </p>
-  </div>
-
-  <h2>Dashboard Gallery</h2>
-
-  <div class="gallery">
-
-    <div class="dashboard">
-      <h2>01. Executive Dashboard</h2>
-      <img src="dashboard-screenshots/01-executive-dashboard.png.png"
-           alt="Executive Dashboard">
     </div>
 
-    <div class="dashboard">
-      <h2>02. Workforce Analytics</h2>
-      <img src="dashboard-screenshots/02-workforce-analytics.png.png"
-           alt="Workforce Analytics Dashboard">
-    </div>
+    <section aria-labelledby="project-glance">
+      <h2 id="project-glance">Project at a Glance</h2>
+      <p class="muted">A quick overview of the project scope and deliverables.</p>
 
-    <div class="dashboard">
-      <h2>03. Client Analytics</h2>
-      <img src="dashboard-screenshots/03-client-analytics.png.png"
-           alt="Client Analytics Dashboard">
-    </div>
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <p>Dashboard Pages</p>
+          <h3>9</h3>
+        </div>
+        <div class="kpi-card">
+          <p>Business Areas</p>
+          <h3>8+</h3>
+        </div>
+        <div class="kpi-card">
+          <p>Primary Tool</p>
+          <h3>Power BI</h3>
+        </div>
+        <div class="kpi-card">
+          <p>Project Focus</p>
+          <h3>Enterprise Analytics</h3>
+        </div>
+      </div>
+      <p class="kpi-note">Dashboard counts reflect the nine screenshots included in this project gallery. No unverified business KPI values are presented here.</p>
+    </section>
 
-    <div class="dashboard">
-      <h2>04. Project Analytics</h2>
-      <img src="dashboard-screenshots/04-project-analytics.png.png"
-           alt="Project Analytics Dashboard">
-    </div>
+    <section aria-labelledby="overview">
+      <div class="card">
+        <h2 id="overview">01. Project Overview</h2>
+        <p class="muted">
+          This project brings multiple enterprise functions into a consolidated Business Intelligence
+          experience. The dashboards are organized to help users review business performance and explore
+          operational areas such as workforce, client relationships, project delivery, sales, finance,
+          IT service performance, cloud services, training and AI initiatives.
+        </p>
+      </div>
+    </section>
 
-    <div class="dashboard">
-      <h2>05. Sales & Revenue</h2>
-      <img src="dashboard-screenshots/05-sales-revenue.png.png"
-           alt="Sales and Revenue Dashboard">
-    </div>
+    <section aria-labelledby="objectives">
+      <div class="card">
+        <h2 id="objectives">02. Project Objectives</h2>
+        <ul class="muted">
+          <li>Present enterprise performance through an executive-level dashboard.</li>
+          <li>Review workforce information and employee-related measures.</li>
+          <li>Explore client performance, satisfaction and potential risk indicators.</li>
+          <li>Monitor project delivery and sales performance.</li>
+          <li>Review finance, billing and IT operations information.</li>
+          <li>Bring cloud, training and AI-related initiatives into the analytics view.</li>
+          <li>Support business discussions with visual summaries and interactive reporting.</li>
+        </ul>
+      </div>
+    </section>
 
-    <div class="dashboard">
-      <h2>06. Finance & Billing</h2>
-      <img src="dashboard-screenshots/06-finance-billing.png.png"
-           alt="Finance and Billing Dashboard">
-    </div>
+    <section aria-labelledby="workflow">
+      <div class="card">
+        <h2 id="workflow">03. Project Workflow</h2>
+        <p class="muted">The project is organized around preparing business data, modeling it, and presenting it through focused dashboard pages.</p>
 
-    <div class="dashboard">
-      <h2>07. IT Operations & SLA</h2>
-      <img src="dashboard-screenshots/07-it-operations-sla.png.png"
-           alt="IT Operations and SLA Dashboard">
-    </div>
+        <div class="card">
+          <h3>01. Business Area Understanding</h3>
+          <p class="muted">Identified the enterprise functions represented in the report and grouped the dashboard pages by business purpose.</p>
+        </div>
+        <div class="card">
+          <h3>02. Data Preparation</h3>
+          <p class="muted">Prepared the data for reporting and organized the information needed for business-focused visuals.</p>
+        </div>
+        <div class="card">
+          <h3>03. Data Modeling</h3>
+          <p class="muted">Included a dedicated data model and relationships view to communicate how report data is structured.</p>
+        </div>
+        <div class="card">
+          <h3>04. Dashboard Development</h3>
+          <p class="muted">Built dashboard views for executive performance and individual enterprise functions.</p>
+        </div>
+        <div class="card">
+          <h3>05. Insight Communication</h3>
+          <p class="muted">Presented the report in a gallery format so reviewers can inspect the purpose and layout of each dashboard page.</p>
+        </div>
+      </div>
+    </section>
 
-    <div class="dashboard">
-      <h2>08. Cloud, Training & AI</h2>
-      <img src="dashboard-screenshots/08-cloud-training-ai.png.png"
-           alt="Cloud Training and AI Dashboard">
-    </div>
+    <section aria-labelledby="tools">
+      <div class="card">
+        <h2 id="tools">04. Tools and Technologies</h2>
+        <ul class="muted">
+          <li><strong>Power BI:</strong> Dashboard development, data visualization and business reporting.</li>
+          <li><strong>Excel:</strong> Spreadsheet-based data preparation and review.</li>
+          <li><strong>Generative AI Tools:</strong> Assisted project planning and insight communication.</li>
+          <li><strong>Data Modeling:</strong> A dedicated report page shows the model and relationships.</li>
+        </ul>
+      </div>
+    </section>
 
-    <div class="dashboard">
-      <h2>09. Data Model & Relationships</h2>
-      <img src="dashboard-screenshots/09-data-model-relationships.png.png"
-           alt="Power BI Data Model and Relationships">
-    </div>
+    <section aria-labelledby="business-areas">
+      <div class="card">
+        <h2 id="business-areas">05. Business Areas Covered</h2>
+        <ul class="muted">
+          <li><strong>Executive:</strong> Consolidated overview of business performance.</li>
+          <li><strong>Workforce:</strong> Employee and workforce-related analysis.</li>
+          <li><strong>Clients:</strong> Client analytics and relationship indicators.</li>
+          <li><strong>Projects:</strong> Project-related performance and delivery views.</li>
+          <li><strong>Sales &amp; Revenue:</strong> Sales performance and revenue reporting.</li>
+          <li><strong>Finance &amp; Billing:</strong> Financial and billing-related reporting.</li>
+          <li><strong>IT Operations &amp; SLA:</strong> IT service operations and service-level views.</li>
+          <li><strong>Cloud, Training &amp; AI:</strong> Digital transformation and capability initiatives.</li>
+        </ul>
+      </div>
+    </section>
 
-  </div>
+    <section aria-labelledby="insights">
+      <div class="card">
+        <h2 id="insights">06. Analytical Value</h2>
+        <p class="muted">
+          The dashboard structure supports cross-functional review by placing different enterprise topics
+          in one report. The specific values and conclusions should be interpreted from the visuals in
+          the Power BI file rather than assumed from the page titles alone.
+        </p>
+        <ul class="muted">
+          <li>The executive view helps reviewers start with an overall business summary.</li>
+          <li>Separate workforce, client and project pages allow more focused functional reviews.</li>
+          <li>Sales and finance pages organize commercial and financial information for analysis.</li>
+          <li>IT operations and SLA reporting gives a dedicated view of service operations.</li>
+          <li>The data model page helps explain the report's data structure and relationships.</li>
+        </ul>
+      </div>
+    </section>
 
-<footer style="
-  border-top: 1px solid #263247;
-  padding: 25px 0;
-  text-align: center;
-  color: #aab6ca;
-  margin-top: 30px;
-">
-  Enterprise IT Services &amp; Digital Transformation Analytics · Subair Khan
-</footer>
-  
+    <section aria-labelledby="recommendations">
+      <div class="card">
+        <h2 id="recommendations">07. Business Recommendations</h2>
+        <ul class="muted">
+          <li>Use the executive dashboard as a starting point for regular business performance reviews.</li>
+          <li>Review workforce, client and project pages together when investigating operational changes.</li>
+          <li>Compare sales and finance information before making revenue or billing decisions.</li>
+          <li>Use IT operations and SLA indicators to identify areas that may need service improvement.</li>
+          <li>Validate the underlying data and metric definitions before acting on any dashboard finding.</li>
+          <li>Use the data model page to help maintain consistent definitions across report pages.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section aria-labelledby="business-impact">
+      <div class="card">
+        <h2 id="business-impact">08. Business Impact</h2>
+        <p class="muted">
+          A consolidated reporting experience can make enterprise information easier to navigate and
+          discuss across teams. This project demonstrates how Power BI can organize business functions
+          into a single portfolio-ready reporting solution.
+        </p>
+        <div class="card">
+          <h3>Executive Visibility</h3>
+          <p class="muted">A single entry point gives reviewers a broad view before exploring individual business areas.</p>
+        </div>
+        <div class="card">
+          <h3>Functional Analysis</h3>
+          <p class="muted">Dedicated pages make it easier to focus on workforce, clients, projects, sales, finance and IT operations.</p>
+        </div>
+        <div class="card">
+          <h3>Structured Reporting</h3>
+          <p class="muted">A separate model view supports understanding of the report structure and relationships.</p>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="project-files">
+      <div class="card">
+        <h2 id="project-files">09. Project Files</h2>
+        <p class="muted">Open the Power BI report or visit the project repository for supporting material.</p>
+        <div class="project-file-buttons">
+          <a class="btn"
+             href="https://drive.google.com/file/d/1XB60kBRVXyWeIfcdd7FXGghSlB_qsaP-/view?usp=sharing"
+             target="_blank" rel="noopener noreferrer">View Power BI File</a>
+          <a class="btn"
+             href="https://github.com/Subairkhan/enterprise-it-digital-transformation-analytics"
+             target="_blank" rel="noopener noreferrer">View GitHub Repository</a>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="dashboard-gallery">
+      <div class="card">
+        <h2 id="dashboard-gallery">10. Dashboard Gallery</h2>
+        <p class="muted">
+          Explore the nine dashboard and data model screenshots included with this project.
+        </p>
+
+        <div class="gallery">
+          <div class="dashboard-card">
+            <h3>01. Executive Dashboard</h3>
+            <p class="muted">Overall business performance overview.</p>
+            <img class="dashboard-image" src="dashboard-screenshots/01-executive-dashboard.png.png" alt="Enterprise IT Executive Dashboard" loading="lazy">
+          </div>
+          <div class="dashboard-card">
+            <h3>02. Workforce Analytics</h3>
+            <p class="muted">Workforce and employee-related reporting.</p>
+            <img class="dashboard-image" src="dashboard-screenshots/02-workforce-analytics.png.png" alt="Workforce Analytics Dashboard" loading="lazy">
+          </div>
+          <div class="dashboard-card">
+            <h3>03. Client Analytics</h3>
+            <p class="muted">Client-focused performance and relationship views.</p>
+            <img class="dashboard-image" src="dashboard-screenshots/03-client-analytics.png.png" alt="Client Analytics Dashboard" loading="lazy">
+          </div>
+          <div class="dashboard-card">
+            <h3>04. Project Analytics</h3>
+            <p class="muted">Project performance and delivery views.</p>
+            <img class="dashboard-image" src="dashboard-screenshots/04-project-analytics.png.png" alt="Project Analytics Dashboard" loading="lazy">
+          </div>
+          <div class="dashboard-card">
+            <h3>05. Sales &amp; Revenue</h3>
+            <p class="muted">Sales and revenue reporting.</p>
+            <img class="dashboard-image" src="dashboard-screenshots/05-sales-revenue.png.png" alt="Sales and Revenue Dashboard" loading="lazy">
+          </div>
+          <div class="dashboard-card">
+            <h3>06. Finance &amp; Billing</h3>
+            <p class="muted">Finance and billing-related reporting.</p>
+            <img class="dashboard-image" src="dashboard-screenshots/06-finance-billing.png.png" alt="Finance and Billing Dashboard" loading="lazy">
+          </div>
+          <div class="dashboard-card">
+            <h3>07. IT Operations &amp; SLA</h3>
+            <p class="muted">IT operations and service-level reporting.</p>
+            <img class="dashboard-image" src="dashboard-screenshots/07-it-operations-sla.png.png" alt="IT Operations and SLA Dashboard" loading="lazy">
+          </div>
+          <div class="dashboard-card">
+            <h3>08. Cloud, Training &amp; AI</h3>
+            <p class="muted">Cloud, training and AI initiative reporting.</p>
+            <img class="dashboard-image" src="dashboard-screenshots/08-cloud-training-ai.png.png" alt="Cloud Training and AI Dashboard" loading="lazy">
+          </div>
+          <div class="dashboard-card">
+            <h3>09. Data Model &amp; Relationships</h3>
+            <p class="muted">Data model structure and relationships.</p>
+            <img class="dashboard-image" src="dashboard-screenshots/09-data-model-relationships.png.png" alt="Power BI Data Model and Relationships" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">Enterprise IT Services &amp; Digital Transformation Analytics · Subair Khan</div>
+  </footer>
+
+  <script>
+  (() => {
+    const canvas = document.getElementById("data-canvas");
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let width = 0, height = 0, dpr = 1, points = [], particles = [], frame = 0;
+    let animationId = null, lastTime = 0;
+
+    function resize() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      const count = Math.min(75, Math.max(24, Math.floor((width * height) / 18000)));
+      points = Array.from({ length: count }, () => ({
+        x: Math.random() * width, y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.28, vy: (Math.random() - 0.5) * 0.28,
+        r: Math.random() * 1.5 + 1
+      }));
+      particles = Array.from({ length: 22 }, () => ({
+        x: Math.random() * width, y: Math.random() * height,
+        speed: Math.random() * 0.65 + 0.2, size: Math.random() * 1.8 + 0.6
+      }));
+    }
+
+    function drawFrame() {
+      ctx.clearRect(0, 0, width, height);
+      const limit = Math.min(145, width * 0.22);
+
+      for (let i = 0; i < points.length; i++) {
+        const p = points[i];
+        for (let j = i + 1; j < points.length; j++) {
+          const q = points[j], dx = p.x - q.x, dy = p.y - q.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < limit) {
+            ctx.strokeStyle = `rgba(45, 212, 191, ${(1 - distance / limit) * 0.22})`;
+            ctx.lineWidth = 0.8;
+            ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
+          }
+        }
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(94, 234, 212, 0.65)"; ctx.fill();
+      }
+
+      const chartWidth = Math.min(210, width * 0.28), chartHeight = 90, margin = 24;
+      [{ x: width - chartWidth - margin, y: height * 0.25 },
+       { x: margin, y: height * 0.68 }].forEach((chart, index) => {
+        const barCount = 7, gap = 8, barWidth = (chartWidth - gap * (barCount - 1)) / barCount;
+        ctx.strokeStyle = "rgba(45, 212, 191, 0.10)";
+        ctx.beginPath(); ctx.moveTo(chart.x, chart.y + chartHeight);
+        ctx.lineTo(chart.x + chartWidth, chart.y + chartHeight); ctx.stroke();
+
+        for (let i = 0; i < barCount; i++) {
+          const wave = Math.sin(frame * 0.018 + i * 0.8 + index);
+          const barHeight = 18 + ((wave + 1) / 2) * 47;
+          ctx.fillStyle = `rgba(45, 212, 191, ${0.10 + ((wave + 1) / 2) * 0.14})`;
+          ctx.fillRect(chart.x + i * (barWidth + gap), chart.y + chartHeight - barHeight, barWidth, barHeight);
+        }
+
+        ctx.beginPath();
+        for (let i = 0; i < 30; i++) {
+          const x = chart.x + (i / 29) * chartWidth;
+          const y = chart.y + 24 + Math.sin(i * 0.35 + frame * 0.025 + index) * 13 + (i / 29) * 12;
+          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = "rgba(96, 165, 250, 0.45)"; ctx.lineWidth = 1.5; ctx.stroke();
+      });
+
+      particles.forEach((p) => {
+        p.x += p.speed; p.y -= p.speed * 0.25;
+        if (p.x > width + 5) { p.x = -5; p.y = Math.random() * height; }
+        if (p.y < -5) p.y = height + 5;
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(45, 212, 191, 0.55)"; ctx.fill();
+      });
+    }
+
+    function animate(time) {
+      if (document.hidden) { animationId = null; return; }
+      animationId = requestAnimationFrame(animate);
+      if (time - lastTime < 33) return;
+      lastTime = time; frame++;
+      points.forEach((p) => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > width) p.vx *= -1;
+        if (p.y < 0 || p.y > height) p.vy *= -1;
+      });
+      drawFrame();
+    }
+
+    function startAnimation() {
+      if (reducedMotion.matches || document.hidden) {
+        if (animationId) cancelAnimationFrame(animationId);
+        animationId = null; drawFrame(); return;
+      }
+      if (!animationId) animationId = requestAnimationFrame(animate);
+    }
+
+    resize(); startAnimation();
+    window.addEventListener("resize", () => { resize(); startAnimation(); });
+    document.addEventListener("visibilitychange", startAnimation);
+    if (reducedMotion.addEventListener) reducedMotion.addEventListener("change", startAnimation);
+  })();
+  </script>
+
+  <script>
+  (() => {
+    const elements = document.querySelectorAll("section, .hero, .dashboard-card, .kpi-card");
+    elements.forEach((element) => element.classList.add("reveal"));
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    elements.forEach((element) => observer.observe(element));
+  })();
+  </script>
 </body>
 </html>
