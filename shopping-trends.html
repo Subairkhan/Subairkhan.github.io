@@ -367,6 +367,67 @@ section:hover,
     transform: translateY(-4px);
 }
 
+/* Dashboard Gallery - Side by Side Cards */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+  align-items: start;
+}
+
+.dashboard-card {
+  min-width: 0;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+  overflow: hidden;
+  transition: transform 0.2s ease,
+              border-color 0.2s ease,
+              box-shadow 0.2s ease;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+  box-shadow: 0 0 18px rgba(94, 234, 212, 0.13);
+}
+
+.dashboard-card h3 {
+  color: var(--accent);
+  margin-top: 14px;
+}
+
+.dashboard-card h3:first-child {
+  margin-top: 0;
+}
+
+.dashboard-card .dashboard-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin-top: 12px;
+}
+
+.dashboard-card .dashboard-actions {
+  margin-top: 18px;
+  margin-bottom: 0;
+}
+
+@media (max-width: 600px) {
+  .gallery {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-card {
+    padding: 16px;
+  }
+
+  .dashboard-card .dashboard-actions .btn {
+    width: 100%;
+  }
+}
     
   </style>
 </head>
@@ -642,131 +703,140 @@ section:hover,
     </section>
 
 
-<!-- 09. Excel Dashboard & Pivot Tables -->
-<section aria-labelledby="excel-dashboard">
+
+<!-- 09. Dashboard Gallery -->
+<section aria-labelledby="dashboard-gallery">
   <div class="card">
-    <h2 id="excel-dashboard">09. Excel Dashboard &amp; Pivot Tables</h2>
+    <h2 id="dashboard-gallery">09. Dashboard Gallery</h2>
 
     <p class="muted">
-      Explore the Shopping Trends Excel dashboard and Pivot Tables,
-      highlighting customer purchasing behaviour, product demand,
-      sales performance and business insights.
+      Explore the Shopping Trends analysis dashboards created using
+      Excel, Power BI and Tableau. Each dashboard is displayed inside
+      its own card with the relevant project file download.
     </p>
 
-    <h3>Shopping Trends Excel Dashboard</h3>
-    <img
-      class="dashboard-image"
-      src="https://raw.githubusercontent.com/Subairkhan/shopping-trends-analysis/7f9f80659d1b26c16b4dc982a4fbac486a2789e7/Shopping_Trends_Excel_Dashboard.png"
-      alt="Shopping Trends Excel Dashboard"
-      loading="lazy"
-    >
+    <div class="gallery">
 
-    <h3>Excel Pivot Tables</h3>
-    <img
-      class="dashboard-image"
-      src="https://raw.githubusercontent.com/Subairkhan/shopping-trends-analysis/7f9f80659d1b26c16b4dc982a4fbac486a2789e7/Shopping_Trends_Excel_Pivot_tables.png"
-      alt="Shopping Trends Excel Pivot Tables"
-      loading="lazy"
-    >
+      <!-- Excel Dashboard Card -->
+      <div class="dashboard-card">
+        <h3>Excel Dashboard &amp; Pivot Tables</h3>
 
-    <!-- Download button inside the same card -->
-    <div class="dashboard-actions">
-      <a class="btn"
-         href="https://github.com/Subairkhan/shopping-trends-analysis/raw/a0f92742d31bc2c7a0ac8be6273cefb81656e1b3/Shopping_Trends_Excel_Analysis.xlsx"
-         target="_blank"
-         rel="noopener noreferrer">
-        Download Excel File
-      </a>
-    </div>
+        <p class="muted">
+          Explore customer purchasing behaviour, product demand,
+          sales performance and business insights using Excel.
+        </p>
 
-  </div>
-</section>
+        <h3>Shopping Trends Excel Dashboard</h3>
+        <img
+          class="dashboard-image"
+          src="https://raw.githubusercontent.com/Subairkhan/shopping-trends-analysis/7f9f80659d1b26c16b4dc982a4fbac486a2789e7/Shopping_Trends_Excel_Dashboard.png"
+          alt="Shopping Trends Excel Dashboard"
+          loading="lazy"
+        >
 
+        <h3>Excel Pivot Tables</h3>
+        <img
+          class="dashboard-image"
+          src="https://raw.githubusercontent.com/Subairkhan/shopping-trends-analysis/7f9f80659d1b26c16b4dc982a4fbac486a2789e7/Shopping_Trends_Excel_Pivot_tables.png"
+          alt="Shopping Trends Excel Pivot Tables"
+          loading="lazy"
+        >
 
-<!-- 10. Power BI Dashboard & Insights -->
-<section aria-labelledby="powerbi-dashboard">
-  <div class="card">
-    <h2 id="powerbi-dashboard">10. Power BI Dashboard &amp; Insights</h2>
+        <div class="dashboard-actions">
+          <a
+            class="btn"
+            href="https://github.com/Subairkhan/shopping-trends-analysis/raw/a0f92742d31bc2c7a0ac8be6273cefb81656e1b3/Shopping_Trends_Excel_Analysis.xlsx"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Download Excel File
+          </a>
+        </div>
+      </div>
 
-    <p class="muted">
-      Explore the Shopping Trends Power BI dashboard, customer
-      purchasing behaviour, product demand and future business impact.
-    </p>
+      <!-- Power BI Dashboard Card -->
+      <div class="dashboard-card">
+        <h3>Power BI Dashboard &amp; Insights</h3>
 
-    <h3>Shopping Trends Power BI Dashboard</h3>
-    <img
-      class="dashboard-image"
-      src="https://raw.githubusercontent.com/Subairkhan/shopping-trends-analysis/7f9f80659d1b26c16b4dc982a4fbac486a2789e7/Shopping_Trends_Powerbi_Dashboard.png"
-      alt="Shopping Trends Power BI Dashboard"
-      loading="lazy"
-      style="width:100%;height:auto;display:block;"
-    >
+        <p class="muted">
+          Explore shopping trends, customer purchasing behaviour,
+          product demand and future business impact.
+        </p>
 
-    <h3>Power BI Insights</h3>
-    <img
-      class="dashboard-image"
-      src="https://raw.githubusercontent.com/Subairkhan/shopping-trends-analysis/7f9f80659d1b26c16b4dc982a4fbac486a2789e7/Shopping_Trends_Powerbi_Insights.png"
-      alt="Shopping Trends Power BI Insights"
-      loading="lazy"
-      style="width:100%;height:auto;display:block;"
-    >
+        <h3>Shopping Trends Power BI Dashboard</h3>
+        <img
+          class="dashboard-image"
+          src="https://raw.githubusercontent.com/Subairkhan/shopping-trends-analysis/7f9f80659d1b26c16b4dc982a4fbac486a2789e7/Shopping_Trends_Powerbi_Dashboard.png"
+          alt="Shopping Trends Power BI Dashboard"
+          loading="lazy"
+        >
 
-    <h3>Power BI Future Impact</h3>
-    <img
-      class="dashboard-image"
-      src="https://raw.githubusercontent.com/Subairkhan/shopping-trends-analysis/7f9f80659d1b26c16b4dc982a4fbac486a2789e7/Shopping_Trends_Powerbi_Future_Impact.png"
-      alt="Shopping Trends Power BI Future Impact"
-      loading="lazy"
-      style="width:100%;height:auto;display:block;"
-    >
+        <h3>Power BI Insights</h3>
+        <img
+          class="dashboard-image"
+          src="https://raw.githubusercontent.com/Subairkhan/shopping-trends-analysis/7f9f80659d1b26c16b4dc982a4fbac486a2789e7/Shopping_Trends_Powerbi_Insights.png"
+          alt="Shopping Trends Power BI Insights"
+          loading="lazy"
+        >
 
-    <div class="dashboard-actions">
-      <a class="btn"
-         href="https://github.com/Subairkhan/shopping-trends-analysis/raw/2db13876d9f56b1091184faf71f246e22295f432/Shopping%20Trends%20Analysis.pbix"
-         target="_blank"
-         rel="noopener noreferrer">
-        Download Power BI File
-      </a>
-    </div>
-  </div>
-</section>
+        <h3>Power BI Future Impact</h3>
+        <img
+          class="dashboard-image"
+          src="https://raw.githubusercontent.com/Subairkhan/shopping-trends-analysis/7f9f80659d1b26c16b4dc982a4fbac486a2789e7/Shopping_Trends_Powerbi_Future_Impact.png"
+          alt="Shopping Trends Power BI Future Impact"
+          loading="lazy"
+        >
 
-<!-- 11. Tableau Dashboard & Story -->
-<section aria-labelledby="tableau-dashboard">
-  <div class="card">
-    <h2 id="tableau-dashboard">11. Tableau Dashboard &amp; Story</h2>
+        <div class="dashboard-actions">
+          <a
+            class="btn"
+            href="https://github.com/Subairkhan/shopping-trends-analysis/raw/2db13876d9f56b1091184faf71f246e22295f432/Shopping%20Trends%20Analysis.pbix"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Download Power BI File
+          </a>
+        </div>
+      </div>
 
-    <p class="muted">
-      Explore the Shopping Trends Tableau dashboard and story,
-      presenting sales performance, customer preferences, product
-      demand and seasonal shopping patterns through visual analytics.
-    </p>
+      <!-- Tableau Dashboard Card -->
+      <div class="dashboard-card">
+        <h3>Tableau Dashboard &amp; Story</h3>
 
-    <h3>Shopping Trends Tableau Dashboard</h3>
-    <img
-      class="dashboard-image"
-      src="https://raw.githubusercontent.com/Subairkhan/shopping-trends-analysis/main/Shopping_Trends_Dashboard.png"
-      alt="Shopping Trends Tableau Dashboard"
-      loading="lazy"
-      style="width:100%;height:auto;display:block;"
-    >
+        <p class="muted">
+          Explore sales performance, customer preferences,
+          product demand and seasonal shopping patterns through
+          Tableau visual analytics and storytelling.
+        </p>
 
-    <h3>Shopping Trends Tableau Story</h3>
-    <img
-      class="dashboard-image"
-      src="https://raw.githubusercontent.com/Subairkhan/shopping-trends-analysis/7f9f80659d1b26c16b4dc982a4fbac486a2789e7/Shopping_Trends_Story.png"
-      alt="Shopping Trends Tableau Story"
-      loading="lazy"
-      style="width:100%;height:auto;display:block;"
-    >
+        <h3>Shopping Trends Tableau Dashboard</h3>
+        <img
+          class="dashboard-image"
+          src="https://raw.githubusercontent.com/Subairkhan/shopping-trends-analysis/main/Shopping_Trends_Dashboard.png"
+          alt="Shopping Trends Tableau Dashboard"
+          loading="lazy"
+        >
 
-    <div class="dashboard-actions">
-      <a class="btn"
-         href="https://github.com/Subairkhan/shopping-trends-analysis/raw/2db13876d9f56b1091184faf71f246e22295f432/Shopping%20Trends%20Analysis.twbx"
-         target="_blank"
-         rel="noopener noreferrer">
-        Download Tableau File
-      </a>
+        <h3>Shopping Trends Tableau Story</h3>
+        <img
+          class="dashboard-image"
+          src="https://raw.githubusercontent.com/Subairkhan/shopping-trends-analysis/7f9f80659d1b26c16b4dc982a4fbac486a2789e7/Shopping_Trends_Story.png"
+          alt="Shopping Trends Tableau Story"
+          loading="lazy"
+        >
+
+        <div class="dashboard-actions">
+          <a
+            class="btn"
+            href="https://github.com/Subairkhan/shopping-trends-analysis/raw/2db13876d9f56b1091184faf71f246e22295f432/Shopping%20Trends%20Analysis.twbx"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Download Tableau File
+          </a>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
