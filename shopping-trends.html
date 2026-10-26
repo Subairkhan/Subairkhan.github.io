@@ -535,6 +535,61 @@ section:hover,
 .dashboard-container .dashboard-download {
   margin-top: 24px;
 }
+
+
+/* Neon Hover Animation for Dashboard Image Cards */
+.dashboard-container .dashboard-item {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* Neon glow on mouse hover */
+.dashboard-container .dashboard-item:hover {
+  transform: translateY(-5px);
+  border-color: var(--accent);
+  box-shadow:
+    0 0 8px var(--accent),
+    0 0 18px rgba(94, 234, 212, 0.25),
+    inset 0 0 8px rgba(94, 234, 212, 0.08);
+}
+
+/* Smooth image zoom */
+.dashboard-container .dashboard-item img {
+  transition:
+    transform 0.35s ease,
+    filter 0.35s ease;
+}
+
+.dashboard-container .dashboard-item:hover img {
+  transform: scale(1.025);
+  filter: brightness(1.08);
+}
+
+/* Keyboard accessibility */
+.dashboard-container .dashboard-item:focus-within {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-container .dashboard-item,
+  .dashboard-container .dashboard-item img {
+    transition: none;
+  }
+
+  .dashboard-container .dashboard-item:hover,
+  .dashboard-container .dashboard-item:hover img {
+    transform: none;
+  }
+}
+
     
   </style>
 </head>
